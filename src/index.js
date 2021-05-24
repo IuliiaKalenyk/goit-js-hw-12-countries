@@ -13,12 +13,19 @@ console.log(refs.cards);
 
 refs.input.addEventListener('input', debounce(onSearch, 500));
 
+let searchQuery = '';
+
 function onSearch(e) {
-  const searchQuery = e.target.value;
- refs.cards.innerHTML = '';
-  API.fetchCountry(searchQuery)
-    .then(specificNameNotification)
-    .catch(onFetchError);
+  searchQuery = e.target.value.trim();
+  console.log(searchQuery)
+  refs.cards.innerHTML = '';
+  if (!searchQuery) {
+    return;
+  } else {
+    API.fetchCountry(searchQuery)
+      .then(specificNameNotification)
+      .catch(onFetchError);
+  }
 }
 
 function renderCountryCard(countres) {
@@ -31,7 +38,8 @@ function renderCountryList(countres) {
   refs.cards.insertAdjacentHTML('beforeend', murkupList);
   }
  
-function onFetchError (error) {
+function onFetchError(error) {
+  
   alert('Трабли, такої країни не має...');
 }
 function specificNameNotification(countres) {
@@ -47,3 +55,5 @@ function specificNameNotification(countres) {
   }
   renderCountryCard(countres);
 }
+
+
